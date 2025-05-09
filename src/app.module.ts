@@ -1,9 +1,10 @@
 import { Module } from '@nestjs/common';
-import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { UsersModule } from './users/users.module';
+import { MongooseModule } from '@nestjs/mongoose';
+
 import configuration from './config/configuration';
 import { validationSchema } from './config/validation.schema';
+import { DeliveryModule } from './deliveries/infrastructure/delivery.module';
 
 @Module({
   imports: [
@@ -21,7 +22,7 @@ import { validationSchema } from './config/validation.schema';
       }),
       inject: [ConfigService],
     }),
-    UsersModule,
+    DeliveryModule,
   ],
 })
 export class AppModule {}

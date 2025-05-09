@@ -1,0 +1,9 @@
+dist/
+coverage/
+node_modules/
+tsconfig.json
+tsconfig.prod.json
+tsconfig.build.json
+.eslintignore
+.eslintrc
+.gitignore
