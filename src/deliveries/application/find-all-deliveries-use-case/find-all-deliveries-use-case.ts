@@ -1,17 +1,32 @@
 import { Injectable } from '@nestjs/common';
+import { Delivery } from 'src/deliveries/domain/delivery.entity';
 
-import { PrimitiveDelivery } from '../../domain/delivery.entity';
 import { DeliveryRepository } from '../../domain/delivery.repository';
+import { FindAllDeliveriesUseCaseDto } from './find-all-deliveries-use-case.dto';
 
 @Injectable()
 export class FindAllDeliveriesUseCase {
   constructor(private readonly deliveryRepository: DeliveryRepository) {}
 
-  async run(): Promise<{ deliveries: PrimitiveDelivery[] }> {
+  async run(): Promise<FindAllDeliveriesUseCaseDto[]> {
     const deliveries = await this.deliveryRepository.findAll();
-
-    return {
-      deliveries: deliveries.map((delivery) => delivery.toValue()),
-    };
+    return deliveries.map((delivery: Delivery) => {
+      const deliveryValue = delivery.toValue();
+      return {
+        orderId: deliveryValue.orderId,
+        address: deliveryValue.address,
+        provider: deliveryValue.provider,
+        trackingNumber: deliveryValue.trackingNumber ?? '',
+        labelUrl: deliveryValue.labelUrl ?? '',
+        statuses: deliveryValue.statuses.map((status) => {
+          return {
+            status: status.status,
+            description: status.description,
+            createdAt: status.createdAt,
+            updatedAt: status.updatedAt,
+          };
+        }),
+      };
+    });
   }
 }

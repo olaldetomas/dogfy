@@ -2,14 +2,18 @@ import { Injectable } from '@nestjs/common';
 
 import { Delivery, PrimitiveDelivery } from '../../domain/delivery.entity';
 import { DeliveryRepository } from '../../domain/delivery.repository';
+import { DeliveryStatus } from '../../domain/delivery-status.entity';
 import { CreateDeliveryDto } from './create-delivery.dto';
 
 @Injectable()
 export class CreateDeliveryUseCase {
   constructor(private readonly deliveryRepository: DeliveryRepository) {}
 
-  async run(dto: CreateDeliveryDto): Promise<{ delivery: PrimitiveDelivery }> {
-    const delivery = Delivery.create(dto);
+  async run(dto: CreateDeliveryDto): Promise<PrimitiveDelivery> {
+    const delivery = Delivery.create({
+      ...dto,
+      statuses: [DeliveryStatus.createPending()],
+    });
 
     // Simulate label generation for the selected provider
     const trackingNumber = `TRK-${Math.floor(Math.random() * 1000000)}`;
@@ -17,10 +21,7 @@ export class CreateDeliveryUseCase {
 
     delivery.setLabelInfo(trackingNumber, labelUrl);
 
-    await this.deliveryRepository.save(delivery);
-
-    return {
-      delivery: delivery.toValue(),
-    };
+    const savedDelivery = await this.deliveryRepository.save(delivery);
+    return savedDelivery.toValue();
   }
 }

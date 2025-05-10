@@ -1,11 +1,10 @@
 import { Controller, Get } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { FindAllDeliveriesUseCase } from 'src/deliveries/application/find-all-deliveries-use-case/find-all-deliveries-use-case';
-import { PrimitiveDelivery } from 'src/deliveries/domain/delivery.entity';
-import { V1_DELIVERIES } from 'src/deliveries/infrastructure/route.constants';
+import { FindAllDeliveriesUseCaseDto } from 'src/deliveries/application/find-all-deliveries-use-case/find-all-deliveries-use-case.dto';
 
 @ApiTags('deliveries')
-@Controller(V1_DELIVERIES)
+@Controller('deliveries')
 export class FindAllDeliveriesController {
   constructor(
     private readonly findAllDeliveriesUseCase: FindAllDeliveriesUseCase,
@@ -18,7 +17,7 @@ export class FindAllDeliveriesController {
     description: 'Returns a list of all deliveries',
     type: Object,
   })
-  async run(): Promise<{ deliveries: PrimitiveDelivery[] }> {
+  async run(): Promise<FindAllDeliveriesUseCaseDto[]> {
     return await this.findAllDeliveriesUseCase.run();
   }
 }

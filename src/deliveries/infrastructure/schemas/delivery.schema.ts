@@ -1,13 +1,14 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { HydratedDocument } from 'mongoose';
 
 import { ShippingProvider } from '../../domain/delivery.entity';
-
-export type DeliveryDocument = HydratedDocument<DeliverySchema>;
+import {
+  DeliveryStatusSchema,
+  DeliveryStatusSchemaObject,
+} from './delivery-status.schema';
 
 @Schema({ timestamps: true })
 export class DeliverySchema {
-  @Prop()
+  @Prop({ required: true })
   id: string;
 
   @Prop({ required: true })
@@ -25,8 +26,14 @@ export class DeliverySchema {
   @Prop()
   labelUrl: string;
 
-  @Prop()
+  @Prop({ type: [DeliveryStatusSchemaObject] })
+  statuses: DeliveryStatusSchema[];
+
+  @Prop({ required: true })
   createdAt: Date;
+
+  @Prop({ required: true })
+  updatedAt: Date;
 }
 
 export const DeliverySchemaObject =
