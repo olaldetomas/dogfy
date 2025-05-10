@@ -23,6 +23,8 @@ export class FindAllDeliveriesUseCase {
           return {
             status: status.status,
             description: status.description,
+            createdAt: status.createdAt,
+            updatedAt: status.updatedAt,
           };
         }),
       };

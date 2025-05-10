@@ -8,5 +8,7 @@ export class FindAllDeliveriesUseCaseDto {
   statuses: {
     status: string;
     description: string;
+    createdAt: Date;
+    updatedAt: Date;
   }[];
 }

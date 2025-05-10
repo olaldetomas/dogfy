@@ -3,7 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { Delivery, PrimitiveDelivery } from '../../domain/delivery.entity';
 import { DeliveryRepository } from '../../domain/delivery.repository';
 import { DeliveryStatus } from '../../domain/delivery-status.entity';
-import { CreateDeliveryDto } from './create-delivery.dto';
+import { CreateDeliveryDto } from '../get-latest-status-by-id-use-case/create-delivery.dto';
 
 @Injectable()
 export class CreateDeliveryUseCase {
@@ -20,7 +20,7 @@ export class CreateDeliveryUseCase {
 
     delivery.setLabelInfo(trackingNumber, labelUrl);
 
-    const savedDelivery = await this.deliveryRepository.save(delivery);
+    const savedDelivery = await this.deliveryRepository.create(delivery);
     return savedDelivery.toValue();
   }
 }

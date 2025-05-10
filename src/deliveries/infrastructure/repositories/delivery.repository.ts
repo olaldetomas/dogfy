@@ -15,7 +15,7 @@ export class MongoDeliveryRepository extends DeliveryRepository {
     super();
   }
 
-  async save(delivery: Delivery): Promise<Delivery> {
+  async create(delivery: Delivery): Promise<Delivery> {
     const deliveryData = delivery.toValue();
     const createdDelivery = await this.deliveryModel.create({
       ...deliveryData,
@@ -28,6 +28,48 @@ export class MongoDeliveryRepository extends DeliveryRepository {
       })),
     });
     return this.mapSchemaToEntity(createdDelivery);
+  }
+
+  async update(delivery: Delivery): Promise<Delivery> {
+    const deliveryData = delivery.toValue();
+    const originalDelivery = await this.deliveryModel.findOne({
+      id: deliveryData.id,
+    });
+    if (!originalDelivery) {
+      throw new Error('Delivery not found');
+    }
+
+    const existingStatusesCount = originalDelivery.statuses?.length || 0;
+    const newStatuses = deliveryData.statuses.slice(existingStatusesCount);
+
+    const updatedDelivery = await this.deliveryModel.findOneAndUpdate(
+      { id: deliveryData.id },
+      {
+        $set: {
+          trackingNumber: deliveryData.trackingNumber,
+          labelUrl: deliveryData.labelUrl,
+          updatedAt: deliveryData.updatedAt,
+        },
+        $push: {
+          statuses: {
+            $each: newStatuses.map((status) => ({
+              id: status.id,
+              status: status.status,
+              description: status.description,
+              createdAt: status.createdAt,
+              updatedAt: status.updatedAt,
+            })),
+          },
+        },
+      },
+      { new: true },
+    );
+
+    if (!updatedDelivery) {
+      throw new Error('Delivery not found');
+    }
+
+    return this.mapSchemaToEntity(updatedDelivery);
   }
 
   async findAll(): Promise<Delivery[]> {
