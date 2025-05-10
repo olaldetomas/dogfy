@@ -10,14 +10,14 @@ export class FindAllDeliveriesController {
     private readonly findAllDeliveriesUseCase: FindAllDeliveriesUseCase,
   ) {}
 
-  @Get()
   @ApiOperation({ summary: 'Get all deliveries' })
   @ApiResponse({
     status: 200,
     description: 'Returns a list of all deliveries',
-    type: Object,
+    type: FindAllDeliveriesUseCaseDto,
   })
+  @Get()
   async run(): Promise<FindAllDeliveriesUseCaseDto[]> {
-    return await this.findAllDeliveriesUseCase.run();
+    return await this.findAllDeliveriesUseCase.execute();
   }
 }

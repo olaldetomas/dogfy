@@ -3,9 +3,11 @@ import { MongooseModule } from '@nestjs/mongoose';
 
 import { CreateDeliveryUseCase } from '../application/create-delivery-use-case/create-delivery-use-case';
 import { FindAllDeliveriesUseCase } from '../application/find-all-deliveries-use-case/find-all-deliveries-use-case';
+import { GetLatestStatusByIdUseCase } from '../application/get-latest-status-by-id-use-case/get-latest-status-by-id-use-case';
 import { DeliveryRepository } from '../domain/delivery.repository';
 import { CreateDeliveryController } from './http/create-delivery/create-delivery.controller';
 import { FindAllDeliveriesController } from './http/find-all-deliveries/find-all-deliveries.controller';
+import { GetLatestStatusByIdController } from './http/get-latest-status-by-id/get-latest-status-by-id.controller';
 import { MongoDeliveryRepository } from './repositories/delivery.repository';
 import {
   DeliverySchema,
@@ -23,16 +25,25 @@ import {
       { name: DeliveryStatusSchema.name, schema: DeliveryStatusSchemaObject },
     ]),
   ],
-  controllers: [CreateDeliveryController, FindAllDeliveriesController],
+  controllers: [
+    CreateDeliveryController,
+    FindAllDeliveriesController,
+    GetLatestStatusByIdController,
+  ],
   providers: [
     CreateDeliveryUseCase,
     FindAllDeliveriesUseCase,
+    GetLatestStatusByIdUseCase,
     MongoDeliveryRepository,
     {
       provide: DeliveryRepository,
       useExisting: MongoDeliveryRepository,
     },
   ],
-  exports: [CreateDeliveryUseCase, FindAllDeliveriesUseCase],
+  exports: [
+    CreateDeliveryUseCase,
+    FindAllDeliveriesUseCase,
+    GetLatestStatusByIdUseCase,
+  ],
 })
 export class DeliveryModule {}

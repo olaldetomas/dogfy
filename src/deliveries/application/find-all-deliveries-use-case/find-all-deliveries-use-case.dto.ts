@@ -1,4 +1,5 @@
 export class FindAllDeliveriesUseCaseDto {
+  id: string;
   orderId: string;
   address: string;
   provider: string;
@@ -7,7 +8,5 @@ export class FindAllDeliveriesUseCaseDto {
   statuses: {
     status: string;
     description: string;
-    createdAt: Date;
-    updatedAt: Date;
   }[];
 }

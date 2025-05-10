@@ -35,6 +35,12 @@ export class MongoDeliveryRepository extends DeliveryRepository {
     return deliveryDocuments.map((doc) => this.mapSchemaToEntity(doc));
   }
 
+  async findById(id: string): Promise<Delivery | null> {
+    const delivery = await this.deliveryModel.findOne({ id }).exec();
+    if (!delivery) return null;
+    return this.mapSchemaToEntity(delivery);
+  }
+
   private mapSchemaToEntity(doc: DeliverySchema): Delivery {
     return new Delivery({
       id: doc.id,

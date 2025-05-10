@@ -10,7 +10,6 @@ import { CreateDeliveryHttpDto } from './create-delivery.http-dto';
 export class CreateDeliveryController {
   constructor(private readonly createDeliveryUseCase: CreateDeliveryUseCase) {}
 
-  @Post()
   @ApiOperation({ summary: 'Create a new delivery' })
   @ApiBody({
     type: CreateDeliveryHttpDto,
@@ -32,10 +31,11 @@ export class CreateDeliveryController {
     type: Object,
   })
   @ApiResponse({ status: 400, description: 'Bad Request.' })
+  @Post()
   async run(
     @Body() createDeliveryHttpDto: CreateDeliveryHttpDto,
   ): Promise<PrimitiveDelivery> {
-    return await this.createDeliveryUseCase.run({
+    return await this.createDeliveryUseCase.execute({
       orderId: createDeliveryHttpDto.orderId,
       address: createDeliveryHttpDto.address,
     });

@@ -8,11 +8,12 @@ import { FindAllDeliveriesUseCaseDto } from './find-all-deliveries-use-case.dto'
 export class FindAllDeliveriesUseCase {
   constructor(private readonly deliveryRepository: DeliveryRepository) {}
 
-  async run(): Promise<FindAllDeliveriesUseCaseDto[]> {
+  async execute(): Promise<FindAllDeliveriesUseCaseDto[]> {
     const deliveries = await this.deliveryRepository.findAll();
     return deliveries.map((delivery: Delivery) => {
       const deliveryValue = delivery.toValue();
       return {
+        id: deliveryValue.id,
         orderId: deliveryValue.orderId,
         address: deliveryValue.address,
         provider: deliveryValue.provider,
@@ -22,8 +23,6 @@ export class FindAllDeliveriesUseCase {
           return {
             status: status.status,
             description: status.description,
-            createdAt: status.createdAt,
-            updatedAt: status.updatedAt,
           };
         }),
       };
