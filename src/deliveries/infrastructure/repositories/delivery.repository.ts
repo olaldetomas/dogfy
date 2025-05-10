@@ -41,6 +41,14 @@ export class MongoDeliveryRepository extends DeliveryRepository {
     return this.mapSchemaToEntity(delivery);
   }
 
+  async findByTrackingNumber(trackingNumber: string): Promise<Delivery | null> {
+    const delivery = await this.deliveryModel
+      .findOne({ trackingNumber })
+      .exec();
+    if (!delivery) return null;
+    return this.mapSchemaToEntity(delivery);
+  }
+
   private mapSchemaToEntity(doc: DeliverySchema): Delivery {
     return new Delivery({
       id: doc.id,

@@ -44,6 +44,7 @@ import {
     CreateDeliveryUseCase,
     FindAllDeliveriesUseCase,
     GetLatestStatusByIdUseCase,
+    DeliveryRepository,
   ],
 })
 export class DeliveryModule {}
