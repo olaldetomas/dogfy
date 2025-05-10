@@ -8,8 +8,7 @@ import {
 
 @Schema({ timestamps: true })
 export class DeliverySchema {
-  @Prop({ required: true })
-  id: string;
+  _id: string;
 
   @Prop({ required: true })
   orderId: string;
@@ -29,10 +28,10 @@ export class DeliverySchema {
   @Prop({ type: [DeliveryStatusSchemaObject] })
   statuses: DeliveryStatusSchema[];
 
-  @Prop({ required: true })
+  @Prop({ default: Date.now })
   createdAt: Date;
 
-  @Prop({ required: true })
+  @Prop({ default: Date.now })
   updatedAt: Date;
 }
 

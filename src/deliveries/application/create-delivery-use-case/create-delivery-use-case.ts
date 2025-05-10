@@ -11,13 +11,13 @@ export class CreateDeliveryUseCase {
 
   async execute(dto: CreateDeliveryDto): Promise<PrimitiveDelivery> {
     const delivery = Delivery.create({
-      ...dto,
+      orderId: dto.orderId,
+      address: dto.address,
       statuses: [DeliveryStatus.createPending()],
     });
 
     const trackingNumber = `TRK-${Math.floor(Math.random() * 1000000)}`;
     const labelUrl = `https://shipping-labels.example.com/${delivery.toValue().provider.toLowerCase()}/label-${trackingNumber}.pdf`;
-
     delivery.setLabelInfo(trackingNumber, labelUrl);
 
     const savedDelivery = await this.deliveryRepository.create(delivery);

@@ -1,5 +1,3 @@
-import { v4 } from 'uuid';
-
 import {
   DeliveryStatus,
   PrimitiveDeliveryStatus,
@@ -11,15 +9,15 @@ export enum ShippingProvider {
 }
 
 export interface PrimitiveDelivery {
-  id: string;
+  id?: string;
   orderId: string;
   address: string;
   provider: ShippingProvider;
   trackingNumber?: string;
   labelUrl?: string;
   statuses: PrimitiveDeliveryStatus[];
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
 export class Delivery {
@@ -31,13 +29,10 @@ export class Delivery {
     statuses: DeliveryStatus[];
   }): Delivery {
     return new Delivery({
-      id: v4(),
       orderId: createDelivery.orderId,
       address: createDelivery.address,
       provider: Delivery.selectRandomProvider(),
       statuses: createDelivery.statuses.map((status) => status.toValue()),
-      createdAt: new Date(),
-      updatedAt: new Date(),
     });
   }
 

@@ -13,18 +13,16 @@ export class FindAllDeliveriesUseCase {
     return deliveries.map((delivery: Delivery) => {
       const deliveryValue = delivery.toValue();
       return {
-        id: deliveryValue.id,
+        id: deliveryValue.id as string,
         orderId: deliveryValue.orderId,
         address: deliveryValue.address,
         provider: deliveryValue.provider,
-        trackingNumber: deliveryValue.trackingNumber ?? '',
-        labelUrl: deliveryValue.labelUrl ?? '',
+        trackingNumber: deliveryValue.trackingNumber as string,
+        labelUrl: deliveryValue.labelUrl as string,
         statuses: deliveryValue.statuses.map((status) => {
           return {
             status: status.status,
             description: status.description,
-            createdAt: status.createdAt,
-            updatedAt: status.updatedAt,
           };
         }),
       };

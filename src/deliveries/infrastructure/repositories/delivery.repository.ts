@@ -4,6 +4,7 @@ import { Model } from 'mongoose';
 
 import { Delivery, ShippingProvider } from '../../domain/delivery.entity';
 import { DeliveryRepository } from '../../domain/delivery.repository';
+import { PrimitiveDeliveryStatus } from '../../domain/delivery-status.entity';
 import { DeliverySchema } from '../schemas/delivery.schema';
 
 @Injectable()
@@ -18,47 +19,30 @@ export class MongoDeliveryRepository extends DeliveryRepository {
   async create(delivery: Delivery): Promise<Delivery> {
     const deliveryData = delivery.toValue();
     const createdDelivery = await this.deliveryModel.create({
-      ...deliveryData,
+      orderId: deliveryData.orderId,
+      address: deliveryData.address,
+      provider: deliveryData.provider,
+      trackingNumber: deliveryData.trackingNumber,
+      labelUrl: deliveryData.labelUrl,
       statuses: deliveryData.statuses.map((status) => ({
-        id: status.id,
         status: status.status,
         description: status.description,
-        createdAt: status.createdAt,
-        updatedAt: status.updatedAt,
       })),
     });
     return this.mapSchemaToEntity(createdDelivery);
   }
 
-  async update(delivery: Delivery): Promise<Delivery> {
-    const deliveryData = delivery.toValue();
-    const originalDelivery = await this.deliveryModel.findOne({
-      id: deliveryData.id,
-    });
-    if (!originalDelivery) {
-      throw new Error('Delivery not found');
-    }
-
-    const existingStatusesCount = originalDelivery.statuses?.length || 0;
-    const newStatuses = deliveryData.statuses.slice(existingStatusesCount);
-
-    const updatedDelivery = await this.deliveryModel.findOneAndUpdate(
-      { id: deliveryData.id },
+  async addStatus(
+    deliveryId: string,
+    status: PrimitiveDeliveryStatus,
+  ): Promise<Delivery> {
+    const updatedDelivery = await this.deliveryModel.findByIdAndUpdate(
+      deliveryId,
       {
-        $set: {
-          trackingNumber: deliveryData.trackingNumber,
-          labelUrl: deliveryData.labelUrl,
-          updatedAt: deliveryData.updatedAt,
-        },
         $push: {
           statuses: {
-            $each: newStatuses.map((status) => ({
-              id: status.id,
-              status: status.status,
-              description: status.description,
-              createdAt: status.createdAt,
-              updatedAt: status.updatedAt,
-            })),
+            status: status.status,
+            description: status.description,
           },
         },
       },
@@ -66,7 +50,7 @@ export class MongoDeliveryRepository extends DeliveryRepository {
     );
 
     if (!updatedDelivery) {
-      throw new Error('Delivery not found');
+      throw new Error('Error updating delivery');
     }
 
     return this.mapSchemaToEntity(updatedDelivery);
@@ -78,7 +62,7 @@ export class MongoDeliveryRepository extends DeliveryRepository {
   }
 
   async findById(id: string): Promise<Delivery | null> {
-    const delivery = await this.deliveryModel.findOne({ id }).exec();
+    const delivery = await this.deliveryModel.findById(id).exec();
     if (!delivery) return null;
     return this.mapSchemaToEntity(delivery);
   }
@@ -93,7 +77,7 @@ export class MongoDeliveryRepository extends DeliveryRepository {
 
   private mapSchemaToEntity(doc: DeliverySchema): Delivery {
     return new Delivery({
-      id: doc.id,
+      id: doc._id,
       orderId: doc.orderId,
       address: doc.address,
       provider: doc.provider as ShippingProvider,

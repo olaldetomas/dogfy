@@ -1,11 +1,9 @@
-import { v4 } from 'uuid';
-
 export interface PrimitiveDeliveryStatus {
-  id: string;
+  id?: string;
   status: string;
   description: string;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
 export enum DeliveryStatusEnum {
@@ -23,27 +21,25 @@ export class DeliveryStatus {
     description: string;
   }): DeliveryStatus {
     return new DeliveryStatus({
-      id: v4(),
       status: createStatus.status,
       description: createStatus.description,
-      createdAt: new Date(),
-      updatedAt: new Date(),
     });
   }
 
   static createPending(): DeliveryStatus {
     return new DeliveryStatus({
-      id: v4(),
       status: DeliveryStatusEnum.PENDING,
       description: 'Delivery is pending processing',
-      createdAt: new Date(),
-      updatedAt: new Date(),
     });
   }
 
   toValue(): PrimitiveDeliveryStatus {
     return {
-      ...this.attributes,
+      id: this.attributes.id,
+      status: this.attributes.status,
+      description: this.attributes.description,
+      createdAt: this.attributes.createdAt,
+      updatedAt: this.attributes.updatedAt,
     };
   }
 }

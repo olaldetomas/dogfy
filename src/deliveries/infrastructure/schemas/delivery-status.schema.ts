@@ -5,8 +5,7 @@ export type DeliveryStatusDocument = HydratedDocument<DeliveryStatusSchema>;
 
 @Schema({ timestamps: true })
 export class DeliveryStatusSchema {
-  @Prop({ required: true })
-  id: string;
+  _id: string;
 
   @Prop({ required: true })
   status: string;
@@ -14,10 +13,10 @@ export class DeliveryStatusSchema {
   @Prop({ required: true })
   description: string;
 
-  @Prop({ required: true })
+  @Prop({ default: Date.now })
   createdAt: Date;
 
-  @Prop({ required: true })
+  @Prop({ default: Date.now })
   updatedAt: Date;
 }
 

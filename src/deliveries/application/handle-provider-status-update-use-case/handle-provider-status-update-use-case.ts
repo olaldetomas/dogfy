@@ -1,11 +1,11 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
-
-import { Delivery } from '../../domain/delivery.entity';
-import { DeliveryRepository } from '../../domain/delivery.repository';
 import {
-  DeliveryStatus,
-  DeliveryStatusEnum,
-} from '../../domain/delivery-status.entity';
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
+
+import { DeliveryRepository } from '../../domain/delivery.repository';
+import { DeliveryStatusEnum } from '../../domain/delivery-status.entity';
 import { ProviderStatusUpdateDto } from './handle-provider-status-update.dto';
 
 @Injectable()
@@ -28,19 +28,15 @@ export class HandleProviderStatusUpdateUseCase {
       DELIVERED: DeliveryStatusEnum.DELIVERED,
       CANCELLED: DeliveryStatusEnum.CANCELLED,
     };
-    const status = statusMap[dto.status] || DeliveryStatusEnum.IN_TRANSIT;
+    const status = statusMap[dto.status];
+    if (!status) {
+      throw new BadRequestException(`Invalid status: ${dto.status}`);
+    }
     const description = dto.description;
 
-    const newStatus = DeliveryStatus.create({
+    await this.deliveryRepository.addStatus(delivery.toValue().id as string, {
       status,
       description,
     });
-
-    const deliveryValue = delivery.toValue();
-    deliveryValue.statuses.push(newStatus.toValue());
-    deliveryValue.updatedAt = new Date();
-    const updatedDelivery = new Delivery(deliveryValue);
-
-    await this.deliveryRepository.update(updatedDelivery);
   }
 }

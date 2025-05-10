@@ -21,14 +21,14 @@ export class GetLatestStatusByIdUseCase {
 
     const sortedStatuses = [...deliveryValue.statuses].sort(
       (a, b) =>
-        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+        new Date(b.createdAt as Date).getTime() -
+        new Date(a.createdAt as Date).getTime(),
     );
+
     const latestStatus = sortedStatuses[0];
     return {
       status: latestStatus.status,
       description: latestStatus.description,
-      createdAt: latestStatus.createdAt,
-      updatedAt: latestStatus.updatedAt,
     };
   }
 }
