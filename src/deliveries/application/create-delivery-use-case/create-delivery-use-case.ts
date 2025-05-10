@@ -13,14 +13,14 @@ export class CreateDeliveryUseCase {
 
     // Simulate label generation for the selected provider
     const trackingNumber = `TRK-${Math.floor(Math.random() * 1000000)}`;
-    const labelUrl = `https://shipping-labels.example.com/${delivery.toPrimitives().provider.toLowerCase()}/label-${trackingNumber}.pdf`;
+    const labelUrl = `https://shipping-labels.example.com/${delivery.toValue().provider.toLowerCase()}/label-${trackingNumber}.pdf`;
 
     delivery.setLabelInfo(trackingNumber, labelUrl);
 
     await this.deliveryRepository.save(delivery);
 
     return {
-      delivery: delivery.toPrimitives(),
+      delivery: delivery.toValue(),
     };
   }
 }

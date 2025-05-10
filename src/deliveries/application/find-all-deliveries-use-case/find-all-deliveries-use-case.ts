@@ -11,7 +11,7 @@ export class FindAllDeliveriesUseCase {
     const deliveries = await this.deliveryRepository.findAll();
 
     return {
-      deliveries: deliveries.map((delivery) => delivery.toPrimitives()),
+      deliveries: deliveries.map((delivery) => delivery.toValue()),
     };
   }
 }

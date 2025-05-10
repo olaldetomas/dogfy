@@ -20,7 +20,7 @@ export class MongoDeliveryRepository extends DeliveryRepository {
   }
 
   async save(delivery: Delivery): Promise<void> {
-    const deliveryData = delivery.toPrimitives();
+    const deliveryData = delivery.toValue();
 
     await this.deliveryModel.findOneAndUpdate(
       { id: deliveryData.id },
