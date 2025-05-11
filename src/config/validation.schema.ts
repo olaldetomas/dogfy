@@ -6,4 +6,5 @@ export const validationSchema = Joi.object({
     .default('development'),
   PORT: Joi.number().required(),
   MONGODB_URI: Joi.string().required(),
+  TRACKING_NUMBER: Joi.string().optional(),
 });

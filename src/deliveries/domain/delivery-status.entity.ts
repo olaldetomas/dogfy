@@ -11,6 +11,7 @@ export enum DeliveryStatusEnum {
   IN_TRANSIT = 'IN_TRANSIT',
   DELIVERED = 'DELIVERED',
   CANCELLED = 'CANCELLED',
+  RETURNED = 'RETURNED',
 }
 
 export class DeliveryStatus {

@@ -29,7 +29,7 @@ export class WebhookController {
     },
   })
   @ApiResponse({ status: 400, description: 'Invalid payload' })
-  async handleTlsWebhook(@Body() payload: ProviderDto) {
+  async handleWebhook(@Body() payload: ProviderDto) {
     const dto = mapPayloadToDto(payload);
 
     if (!dto) {
