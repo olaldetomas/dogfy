@@ -1,0 +1,26 @@
+{
+  "moduleFileExtensions": ["ts", "tsx", "js", "json"],
+  "transform": {
+    "^.+\\.tsx?$": "ts-jest"
+  },
+  "testRegex": "(/test/unit/.*\\.(spec).(ts)$|/test/e2e/.*\\.(e2e-spec).(ts)$)",
+  "collectCoverageFrom": [
+    "src/**/*.ts",
+    "!src/**/*.module.ts",
+    "!src/**/main.ts",
+    "!src/**/*.dto.ts",
+    "!src/**/*.schema.ts",
+    "!src/**/*.interface.ts",
+    "!src/**/index.ts",
+    "!**/node_modules/**",
+    "!**/vendor/**"
+  ],
+  "coverageReporters": ["json", "lcov"],
+  "coverageDirectory": "./coverage",
+  "testEnvironment": "node",
+  "rootDir": ".",
+  "moduleNameMapper": {
+    "^src/(.*)$": "<rootDir>/src/$1"
+  },
+  "setupFilesAfterEnv": ["<rootDir>/test/setup-jest.ts"]
+}
