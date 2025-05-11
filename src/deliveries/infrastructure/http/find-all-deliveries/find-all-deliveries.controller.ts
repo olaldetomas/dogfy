@@ -14,7 +14,6 @@ export class FindAllDeliveriesController {
   @ApiResponse({
     status: 200,
     description: 'Returns a list of all deliveries',
-    type: FindAllDeliveriesUseCaseDto,
   })
   @Get()
   async run(): Promise<FindAllDeliveriesUseCaseDto[]> {

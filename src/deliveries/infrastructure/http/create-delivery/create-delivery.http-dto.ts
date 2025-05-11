@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsString } from 'class-validator';
 
-export class CreateDeliveryHttpDto {
+export class CreateDeliveryDto {
   @ApiProperty({
     description: 'The ID of the order',
     example: 'order123',

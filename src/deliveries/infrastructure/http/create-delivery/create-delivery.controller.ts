@@ -3,7 +3,7 @@ import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CreateDeliveryUseCase } from 'src/deliveries/application/create-delivery-use-case/create-delivery-use-case';
 import { PrimitiveDelivery } from 'src/deliveries/domain/delivery.entity';
 
-import { CreateDeliveryHttpDto } from './create-delivery.http-dto';
+import { CreateDeliveryDto } from './create-delivery.http-dto';
 
 @ApiTags('deliveries')
 @Controller('deliveries')
@@ -12,7 +12,7 @@ export class CreateDeliveryController {
 
   @ApiOperation({ summary: 'Create a new delivery' })
   @ApiBody({
-    type: CreateDeliveryHttpDto,
+    type: CreateDeliveryDto,
     examples: {
       delivery: {
         summary: 'Create a delivery example',
@@ -33,7 +33,7 @@ export class CreateDeliveryController {
   @ApiResponse({ status: 400, description: 'Bad Request.' })
   @Post()
   async run(
-    @Body() createDeliveryHttpDto: CreateDeliveryHttpDto,
+    @Body() createDeliveryHttpDto: CreateDeliveryDto,
   ): Promise<PrimitiveDelivery> {
     return await this.createDeliveryUseCase.execute({
       orderId: createDeliveryHttpDto.orderId,

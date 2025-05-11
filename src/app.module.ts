@@ -5,7 +5,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import configuration from './config/configuration';
 import { validationSchema } from './config/validation.schema';
 import { DeliveryModule } from './deliveries/infrastructure/delivery.module';
-import { ProvidersModule } from './providers/providers.module';
+import { ProvidersModule } from './providers/infrastructure/providers.module';
 
 @Module({
   imports: [

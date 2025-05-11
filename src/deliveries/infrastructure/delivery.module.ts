@@ -1,6 +1,7 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 
+import { ProvidersModule } from '../../providers/infrastructure/providers.module';
 import { CreateDeliveryUseCase } from '../application/create-delivery-use-case/create-delivery-use-case';
 import { FindAllDeliveriesUseCase } from '../application/find-all-deliveries-use-case/find-all-deliveries-use-case';
 import { GetLatestStatusByIdUseCase } from '../application/get-latest-status-by-id-use-case/get-latest-status-by-id-use-case';
@@ -24,6 +25,7 @@ import {
       { name: DeliverySchema.name, schema: DeliverySchemaObject },
       { name: DeliveryStatusSchema.name, schema: DeliveryStatusSchemaObject },
     ]),
+    forwardRef(() => ProvidersModule),
   ],
   controllers: [
     CreateDeliveryController,

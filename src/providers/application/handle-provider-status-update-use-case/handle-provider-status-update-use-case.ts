@@ -4,8 +4,8 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 
-import { DeliveryRepository } from '../../domain/delivery.repository';
-import { DeliveryStatusEnum } from '../../domain/delivery-status.entity';
+import { DeliveryRepository } from '../../../deliveries/domain/delivery.repository';
+import { DeliveryStatusEnum } from '../../../deliveries/domain/delivery-status.entity';
 import { ProviderStatusUpdateDto } from './handle-provider-status-update.dto';
 
 @Injectable()
@@ -24,9 +24,11 @@ export class HandleProviderStatusUpdateUseCase {
     }
 
     const statusMap: Record<string, DeliveryStatusEnum> = {
-      OUT_FOR_DELIVERY: DeliveryStatusEnum.IN_TRANSIT,
+      PENDING: DeliveryStatusEnum.PENDING,
+      IN_TRANSIT: DeliveryStatusEnum.IN_TRANSIT,
       DELIVERED: DeliveryStatusEnum.DELIVERED,
       CANCELLED: DeliveryStatusEnum.CANCELLED,
+      RETURNED: DeliveryStatusEnum.RETURNED,
     };
     const status = statusMap[dto.status];
     if (!status) {

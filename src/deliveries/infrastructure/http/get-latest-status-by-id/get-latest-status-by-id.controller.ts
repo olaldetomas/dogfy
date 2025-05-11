@@ -21,7 +21,6 @@ export class GetLatestStatusByIdController {
   @ApiResponse({
     status: 200,
     description: 'Returns the latest status of the delivery',
-    type: GetLatestStatusByIdUseCaseDto,
   })
   @ApiResponse({
     status: 404,

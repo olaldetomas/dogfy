@@ -1,8 +1,8 @@
 import { BadRequestException, Body, Controller, Post } from '@nestjs/common';
 import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { HandleProviderStatusUpdateUseCase } from 'src/providers/application/handle-provider-status-update-use-case/handle-provider-status-update-use-case';
 
-import { HandleProviderStatusUpdateUseCase } from '../../deliveries/application/handle-provider-status-update-use-case/handle-provider-status-update-use-case';
-import { mapPayloadToDto } from './mappers';
+import { mapPayloadToDto } from '../mappers';
 import { ProviderDto } from './provider.dto';
 
 @ApiTags('Webhooks')
